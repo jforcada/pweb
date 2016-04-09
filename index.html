@@ -30,11 +30,6 @@
       	  </p>
       	  <ul class="contact-list">
       	    <li>
-      	      <a href="https://twitter.com/j_forcada" class="pure-button custom-link" target="_blank">
-                <i class="fa fa-twitter"></i> @j_forcada
-      	      </a>
-      	    </li>
-      	    <li>
       	      <a href="https://www.linkedin.com/in/jforcadab/en" class="pure-button custom-link">
                 <i class="fa fa-send"></i> CV
       	      </a>
@@ -50,18 +45,71 @@
       <div class="pure-g row-canvas">
         <div class="pure-u-1 pure-u-md-1-1 css-canvas">
           <h2>CV</h2>
-          <h3><i class="fa fa-graduation-cap"></i> 2005 - 2011 &nbsp;&nbsp; Computer Engineering student at Universitat Jaume I (UJI)</h3>
+
+          <h3><i class="fa fa-graduation-cap"></i>&nbsp;&nbsp; 2005 - 2011 &nbsp;&nbsp; Computer Engineering student at Universitat Jaume I (UJI)</h3>
           <p>
-            I studied Computer Engineering in the Universitat Jaume I (UJI) in Castellón. Focused on software
+            I studied Computer Engineering in the Universitat Jaume I (UJI) in Castellón, Spain. Focused on software
             engineering and algorithms.
           </p>
-          <h3><i class="fa fa-cogs"></i> 2011 - 2014 &nbsp;&nbsp; Software Engineer at TUENTI TECHNOLOGIES</h3>
+
+          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2011 - 2014 &nbsp;&nbsp; Software Engineer at TUENTI TECHNOLOGIES SL</h3>
+          TODO QUOTE
           <p>
-            Phone register, group chat, events, chat photos, fast checkout
+            One of the first projects I work on at the company was a new <strong>sign up system with phone verification</strong> for the
+            social network. The project was built using a SMS gateway with security code generation to verify the
+            identity of the profile.
           </p>
-          <h3><i class="fa fa-cogs"></i> 2015 - 2016 &nbsp;&nbsp; Software Engineer at QDQ Media</h3>
           <p>
-            Partners project, Leela, Call me maybe, Stats redis riak
+            Another web project I worked on was the rewrite of the <strong>social events</strong> feature. Rebuilding both, frontend and backend,
+            focusing mainly in its scalability to be able to manage the huge load of the site: database denormalization,
+            model caching, load balancing, data archiving, etc.
+          </p>
+          <p>
+            Then, I spent a full year working on the <strong>social network chat</strong>. There were two main projects our team developed: The
+            <strong>group chat</strong>, extending the existing one-to-one chat to allow users to create roms with more than two members. And the
+            <strong>photo sharing</strong>, with which the users could send their photos through a chat conversation.
+          </p>
+          <p>
+            Also worked for a year and a half on the MVNO (Mobile Virtual Network Operator) side of the company. Developing with
+            the rest of the acquisition team an <strong>A/B testing framework</strong> for our online store checkout with payment integration,
+            identity verification and shipment tracking.
+          </p>
+          <p>
+            At the MVNO, our team also rebuilt the <strong>retail sales tool</strong> to solve security issues, and perform some usability
+            improvements from the feedback provided by the sellers. Also improving and standarizing the backend API the
+            tool was relying on.
+          </p>
+          <p>
+            All the work on the server side was done in PHP, using an in house web framework and the Symfony 2 framework. On the
+            storage side, MySQL, Memcached and HBase were the main tools. We were also relying on Beanstalkd as messaging system and queue
+            processing. On the client side, we developed in JavaScript with both jQuery and YUI.
+          </p>
+          <p>
+            TODO METODOLOGIAS
+          </p>
+
+          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2015 - 2016 &nbsp;&nbsp; Software Engineer at QDQ Media SA</h3>
+          TODO QUOTE
+          <p>
+            At the beginning of joining the company, I developed a sign in solution to bring customers from other companies
+            in partnership. It was developed in Python 3 and Django framework.
+          </p>
+          <p>
+            Next we analyzed the architecture of the company systems, and decide to start the migration process to a microservices
+            architecture. We decided to start small, and I started to build the asynchronous <strong>email service</strong> fed up through RabbitMQ
+            queues. That implied also, to refactor the monolithic architecture to adapt to an asynchronous pattern when using the service.
+            The stack used was Python 3 with Django, Postgres and RabbitMQ.
+          </p>
+          <p>
+            Continuing with the microservices approach, I worked on a substitution service for an old call tracking system.
+            This time, building a synchronous system with an authenticated HTTP API, so multiple user facing products could benefit
+            from the same service easily. The tech here was Node.js with the hapi web framework.
+          </p>
+          <p>
+            Stats redis riak, globalstatistics, tsuru
+          </p>
+          <p>
+            TODO METODOLOGIAS
           </p>
         </div>
       </div>
