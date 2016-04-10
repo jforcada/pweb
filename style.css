@@ -17,37 +17,27 @@ body {
     max-width: 960px;
 }
 
-
+/* Identity section */
+.identity {
+  margin-bottom: 100px;
+}
 .contact-list li {
     display: inline;
 }
-
 .pure-button {
     background-color: #8AC007;
     margin-top: 5px;
 }
-
 .center {
     text-align: center;
 }
-
-.twitter-link {
-    background: url("twitter-logo.png") no-repeat top left;
-    padding: 0px 0 0 25px;
-}
-
-.linkedin-link {
-    background: url("linkedin-logo.png") no-repeat top left;
-    padding: 0px 0 0 25px;
-}
-
-.email-link {
-    background: url("email-logo.png") no-repeat top left;
-    padding: 0px 0 0 25px;
-}
-
 .photo {
     border-style: solid;
     border-width: 5px;
     border-color: white;
+}
+
+/* CV section */
+.cv h3 {
+  margin-top: 40px;
 }

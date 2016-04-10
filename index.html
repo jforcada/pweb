@@ -14,7 +14,7 @@
 
   <body>
     <div class="content">
-      <div class="pure-g">
+      <div class="identity pure-g">
         <div class="pure-u-1 pure-u-md-1-1">
           <div class="center">
             <img src="photo.jpeg" class="photo" />
@@ -42,7 +42,7 @@
       	  </ul>
         </div>
       </div>
-      <div class="pure-g row-canvas">
+      <div class="cv pure-g row-canvas">
         <div class="pure-u-1 pure-u-md-1-1 css-canvas">
           <h2>CV</h2>
 
@@ -52,8 +52,7 @@
             engineering and algorithms.
           </p>
 
-          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2011 - 2014 &nbsp;&nbsp; Software Engineer at TUENTI TECHNOLOGIES SL</h3>
-          TODO QUOTE
+          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2011 - 2014 &nbsp;&nbsp; Software Engineer at TUENTI TECHNOLOGIES</h3>
           <p>
             One of the first projects I work on at the company was a new <strong>sign up system with phone verification</strong> for the
             social network. The project was built using a SMS gateway with security code generation to verify the
@@ -85,19 +84,20 @@
             processing. On the client side, we developed in JavaScript with both jQuery and YUI.
           </p>
           <p>
-            TODO METODOLOGIAS
+            The team were managed with Scrum as long as custom methodologies. We did heavy use of continuous integration and
+            automated development environments that mimicked production. High quality testing of every project became a self imposed
+            standard.
           </p>
 
-          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2015 - 2016 &nbsp;&nbsp; Software Engineer at QDQ Media SA</h3>
-          TODO QUOTE
+          <h3><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2015 - 2016 &nbsp;&nbsp; Software Engineer at QDQ Media</h3>
           <p>
             At the beginning of joining the company, I developed a sign in solution to bring customers from other companies
             in partnership. It was developed in Python 3 and Django framework.
           </p>
           <p>
-            Next we analyzed the architecture of the company systems, and decide to start the migration process to a microservices
-            architecture. We decided to start small, and I started to build the asynchronous <strong>email service</strong> fed up through RabbitMQ
-            queues. That implied also, to refactor the monolithic architecture to adapt to an asynchronous pattern when using the service.
+            Next my team analyzed the architecture of the company systems, and decided to start the migration process to a microservices
+            architecture. We wanted to start small, and I built the asynchronous <strong>email service</strong> fed up through RabbitMQ
+            queues. That also implied to refactor the monolithic architecture to adapt to an asynchronous pattern when using the service.
             The stack used was Python 3 with Django, Postgres and RabbitMQ.
           </p>
           <p>
@@ -106,10 +106,15 @@
             from the same service easily. The tech here was Node.js with the hapi web framework.
           </p>
           <p>
-            Stats redis riak, globalstatistics, tsuru
+            Another big project that I worked on was a full revamp of the in house statistics service. Starting with the frontend
+            standarization of the tracking across different projects adapting their templates and building an agnostic client-side
+            to automatically start tracking when included. The legacy system was using redis to store the data, and we migrated it
+            to Riak KV.
           </p>
           <p>
-            TODO METODOLOGIAS
+            To support this kind of infrastructure, we use a private PaaS (Platform-as-a-Service) based on docker (like our
+            development environments) to quickly release new applications with minimal operations effort. We also established an
+            automated release process with continuous integration.
           </p>
         </div>
       </div>
