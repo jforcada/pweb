@@ -1,12 +1,9 @@
-ul {
-    list-style-type: none;
-    padding: 0px;
-}
-
 body {
     background-color: #303030;
 }
-
+.title {
+  font-family: 'Muli', sans-serif;
+}
 .content {
     color: rgba(185, 185, 185, 1);
     padding-left: 5px;
@@ -20,6 +17,10 @@ body {
 /* Identity section */
 .identity {
   margin-bottom: 100px;
+}
+.contact-list {
+  list-style-type: none;
+  padding: 0px;
 }
 .contact-list li {
     display: inline;
