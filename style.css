@@ -45,3 +45,9 @@ body {
 .cv h3 {
   margin-top: 40px;
 }
+.current-label {
+  color: black;
+  background-color: #8AC007;
+  border-radius: 2px;
+  padding: 2px 6px;
+}
