@@ -4,6 +4,9 @@ body {
 .title {
   font-family: 'Muli', sans-serif;
 }
+.section-title {
+  font-size: 2.3em;
+}
 .content {
     color: rgba(185, 185, 185, 1);
     padding-left: 5px;
