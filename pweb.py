@@ -10,10 +10,20 @@ TEMPLATE_SUBDIRECTORY_FULL = '{0}/{1}'.format(
     CONTENT_DIRECTORY, TEMPLATE_SUBDIRECTORY)
 DISTRIBUTION_DIRECTORY = 'dist'
 
+
+def url(value):
+    LINKS = {
+        'cv': 'cv.html',
+        'blog': 'blog.html',
+    }
+    return LINKS[value]
+
+
 env = Environment(
     loader=PackageLoader(CONTENT_DIRECTORY, TEMPLATE_SUBDIRECTORY),
     autoescape=select_autoescape(['html'])
 )
+env.filters['url'] = url
 
 # [Re]Create distribution directory
 if os.path.isdir(DISTRIBUTION_DIRECTORY):

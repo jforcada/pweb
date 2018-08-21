@@ -1,12 +1,10 @@
-{% extends "bases/base.html" %}
-
-{% block contentClass %}index-content{% endblock %}
-
-{% block content %}
-<div class="pure-g index">
-  <div class="pure-u-1-1 cell">
-    <h1>Jaime Forcada Balaguer</h1>
-    <img src="static/logo1.svg.png">
+<div class="header pure-g">
+  <div class="pure-u-1-5">
+    <a href="/">
+      <img src="static/logo1.svg.png">
+    </a>
+  </div>
+  <div class="pure-u-4-5">
     <ul class="contact-list">
       <li>
         <a href="{{ 'cv'|url }}" class="pure-button custom-link">
@@ -26,4 +24,3 @@
     </ul>
   </div>
 </div>
-{% endblock %}

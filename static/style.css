@@ -2,82 +2,97 @@ body {
   background-color: white;
 }
 .title {
-font-family: 'Muli', sans-serif;
+  font-family: 'Muli', sans-serif;
 }
 .section-title {
-font-size: 2.3em;
+  font-size: 2.3em;
 }
 .content {
-color: black;
-padding-left: 5px;
-padding-right: 5px;
-margin-top: 50px;
-margin-left: auto;
-margin-right: auto;
-max-width: 960px;
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 960px;
 }
 
-/* Identity section */
-.identity {
-margin-bottom: 100px;
+/* Header */
+.header {
+  margin-bottom: 30px;
 }
-.contact-list {
-list-style-type: none;
-padding: 0px;
+.header ul {
+  list-style-type: none;
+  padding: 0px;
+  text-align: right;
 }
-.contact-list li {
+.header li {
   display: inline;
 }
+.header img {
+  width: 80px;
+  height: 80px;
+}
 .pure-button {
-color: white;
-background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
-margin-top: 5px;
+  color: white;
+  background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
+  margin-top: 5px;
+}
+.pure-button:hover {
+  background: linear-gradient(to right, #7e7eff 0%,#ab3cfd 100%);
 }
 .center {
   text-align: center;
 }
-.photo {
-  border-style: solid;
-  border-width: 5px;
-  border-color: white;
+
+/* Footer */
+footer {
+  height: 100px;
 }
 
 /* index */
 .index-content {
-color: black;
-padding-left: 5px;
-padding-right: 5px;
-margin-top: 0px;
-margin-left: auto;
-margin-right: auto;
-max-width: 960px;
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 960px;
 }
 .index {
-height: 100vh;
-width: 100%;
-display: table;
+  height: 100vh;
+  width: 100%;
+  display: table;
 }
 .index .cell {
-display: table-cell;
-vertical-align: middle;
-font-family: 'Muli', sans-serif;
-text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'Muli', sans-serif;
+  text-align: center;
 }
 .index .cell h1 {
-font-size: 1.5em;
+  font-size: 1.5em;
 }
 .index .cell img {
   height: 200px;
   width: 200px;
 }
+.index ul {
+  list-style-type: none;
+  padding: 0px;
+}
+.index li {
+  display: inline;
+}
 
 /* CV */
 .cv h3 {
-margin-top: 40px;
+  margin-top: 40px;
 }
 .current-label {
-color: white;
-background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
-border-radius: 2px;
-padding: 2px 6px;
+  color: white;
+  background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
+  border-radius: 2px;
+  padding: 2px 6px;
 }
