@@ -14,6 +14,7 @@ DISTRIBUTION_DIRECTORY = 'dist'
 def url(value):
     LINKS = {
         'cv': 'cv.html',
+        'contact': 'contact.html',
         'blog': 'blog.html',
     }
     return LINKS[value]
