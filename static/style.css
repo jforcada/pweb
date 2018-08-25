@@ -8,7 +8,7 @@ body {
   font-size: 2.3em;
 }
 .content {
-  color: black;
+  color: #424242;
   padding-left: 5px;
   padding-right: 5px;
   margin-top: 50px;
@@ -52,7 +52,7 @@ footer {
 
 /* index */
 .index-content {
-  color: black;
+  color: #424242;
   padding-left: 5px;
   padding-right: 5px;
   margin-top: 0px;
@@ -95,4 +95,20 @@ footer {
   background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
   border-radius: 2px;
   padding: 2px 6px;
+}
+
+/* Contact list */
+.contact-list {
+  font-size: 24px;
+}
+.contact-list :nth-child(odd) {
+  text-align: right;
+  margin-bottom: 20px;
+}
+.contact-list :nth-child(odd) span {
+  padding-right: 50px;
+}
+.contact-list a {
+  color: #424242;
+  text-decoration: none;
 }
