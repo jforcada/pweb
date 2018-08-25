@@ -1,0 +1,13 @@
+{% extends "blog.html" %}
+
+{% block post %}
+
+<h3>Posts</h3>
+
+<ul class="old-posts">
+  <li><a href="{{ 'post:0003'|url }}">This is a third entry</li></a>
+  <li><a href="{{ 'post:0002'|url }}">This is a second entry</li></a>
+  <li><a href="{{ 'post:0001'|url }}">This is a first entry</li></a>
+</ul>
+
+{% endblock %}

@@ -15,6 +15,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   max-width: 960px;
+  line-height: 18px;
 }
 
 /* Header */
@@ -111,4 +112,29 @@ footer {
 .contact-list a {
   color: #424242;
   text-decoration: none;
+}
+
+/* Blog */
+.blog h3 {
+  font-size: 26px;
+  margin-top: 60px;
+}
+.blog .old-entries-link {
+  margin-top: 30px;
+  text-align: right;
+}
+.blog .old-entries-link a {
+  color: #424242;
+  text-decoration: none;
+}
+.blog .old-posts li {
+  list-style-type: none;
+}
+.blog .old-posts li {
+  list-style-type: none;
+  margin-bottom: 5px;
+}
+.blog .old-posts li a {
+  text-decoration: none;
+  color: #424242;
 }
