@@ -13,6 +13,11 @@ TEMPLATE_SUBDIRECTORY_FULL = '{0}/{1}'.format(
 DISTRIBUTION_DIRECTORY = 'dist'
 
 
+TAGS = {
+    '0001': [('software development', '#'), ('JavaScript', '#')],
+}
+
+
 def url(value):
     if 'post:' in value:
         _, postnum = value.split(':')
@@ -39,7 +44,6 @@ if os.path.isdir(DISTRIBUTION_DIRECTORY):
     shutil.rmtree(DISTRIBUTION_DIRECTORY)
 os.mkdir(DISTRIBUTION_DIRECTORY)
 
-
 # Generate blog
 post_distribution_path = 'dist/posts'
 os.mkdir(post_distribution_path)
@@ -50,7 +54,12 @@ for post_filename in sorted(os.listdir(path='content/templates/posts')):
         template = env.get_template('posts/{}'.format(post_filename))
         distribution_path = '{}/{}'.format(post_distribution_path,
                                            post_filename)
-        template.stream(the='variables', go='here').dump(distribution_path)
+        post_serial_num = post_filename.split('-')[0]
+        if post_serial_num in TAGS:
+            tags = TAGS[post_filename.split('-')[0]]
+        else:
+            tags = ()
+        template.stream(tags=tags).dump(distribution_path)
 
 # Link last post to include it in the main blog page
 shutil.copyfile('content/templates/posts/{}'.format(last_post),
