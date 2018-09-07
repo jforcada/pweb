@@ -1,0 +1,57 @@
+{% extends "blog.html" %}
+
+{% block post %}
+
+<h3>Static site generator with Python and Jinja</h3>
+{% include 'includes/blog-post-details.html' %}
+
+Tags: Software engineering, automation
+
+<p>
+  Static site generators have been trendy these last years. The provide the old-school lightweight
+  publishing mechanism from plain HTML with the advantage of an automated build.
+</p>
+
+<p>
+  I'm going to show you how you can automate the build of a web site with a blog. We're going to
+  use Python 3, Jinja2 and good old HTML and CSS. Let's first install Jinja2 in our system or
+  virtual environment.
+</p>
+
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">pip install <span style="color: #aa0000">Jinja2</span>==2.10
+</pre></div>
+
+<p>
+  All our content will be stored inside the <code>content</code> folder. First let's initialize
+  the Jinja environment. The templates will live under <code>content/templates</code>.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">from</span> <span style="color: #f8f8f2">jinja2</span> <span style="color: #66d9ef">import</span> <span style="color: #f8f8f2">Environment,</span> <span style="color: #f8f8f2">FileSystemLoader,</span> <span style="color: #f8f8f2">select_autoescape</span>
+
+<span style="color: #f8f8f2">CONTENT_DIRECTORY</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;content&#39;</span>
+<span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;templates&#39;</span>
+<span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY_FULL</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{0}/{1}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(</span>
+    <span style="color: #f8f8f2">CONTENT_DIRECTORY,</span> <span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY)</span>
+  
+<span style="color: #f8f8f2">env</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">Environment(</span>
+    <span style="color: #f8f8f2">loader</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">FileSystemLoader(TEMPLATE_SUBDIRECTORY_FULL,</span> <span style="color: #f8f8f2">followlinks</span><span style="color: #f92672">=</span><span style="color: #66d9ef">True</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">autoescape</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">select_autoescape([</span><span style="color: #e6db74">&#39;html&#39;</span><span style="color: #f8f8f2">])</span>
+<span style="color: #f8f8f2">)</span>
+</pre></div>
+  
+<p>
+  We are going to need a distribution directory to write all our processed site. Let's call it
+  <code>dist</code> and create it in the same level as our script. If the directory already
+  exists, remove it and create it again. You will need to import <code>os</code> at the top.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">import</span> <span style="color: #f8f8f2">os</span>
+<span style="color: #f92672">...</span>
+<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">isdir(DISTRIBUTION_DIRECTORY):</span>
+    <span style="color: #f8f8f2">shutil</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">rmtree(DISTRIBUTION_DIRECTORY)</span>
+<span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">mkdir(DISTRIBUTION_DIRECTORY)</span>
+</pre></div>
+  
+
+
+{% endblock %}

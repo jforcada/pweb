@@ -139,14 +139,14 @@ footer {
   color: #424242;
   text-decoration: none;
 }
-.blog .old-posts li {
+.blog .post-list li {
   list-style-type: none;
 }
-.blog .old-posts li {
+.blog .post-list li {
   list-style-type: none;
   margin-bottom: 5px;
 }
-.blog .old-posts li a {
+.blog .post-list li a {
   text-decoration: none;
   color: #424242;
 }
