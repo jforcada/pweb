@@ -22,36 +22,275 @@ Tags: Software engineering, automation
 </pre></div>
 
 <p>
-  All our content will be stored inside the <code>content</code> folder. First let's initialize
-  the Jinja environment. The templates will live under <code>content/templates</code>.
+  Let's get first our data structures in place. We will consider everything a <code>Page</code>
+  type. Al construct a hierarchy from there.
 </p>
 
-<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">from</span> <span style="color: #f8f8f2">jinja2</span> <span style="color: #66d9ef">import</span> <span style="color: #f8f8f2">Environment,</span> <span style="color: #f8f8f2">FileSystemLoader,</span> <span style="color: #f8f8f2">select_autoescape</span>
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Page</span><span style="color: #f8f8f2">(object):</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__str__</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #e6db74">&#39;Abstract Page&#39;</span>
 
-<span style="color: #f8f8f2">CONTENT_DIRECTORY</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;content&#39;</span>
-<span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;templates&#39;</span>
-<span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY_FULL</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{0}/{1}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(</span>
-    <span style="color: #f8f8f2">CONTENT_DIRECTORY,</span> <span style="color: #f8f8f2">TEMPLATE_SUBDIRECTORY)</span>
-  
-<span style="color: #f8f8f2">env</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">Environment(</span>
-    <span style="color: #f8f8f2">loader</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">FileSystemLoader(TEMPLATE_SUBDIRECTORY_FULL,</span> <span style="color: #f8f8f2">followlinks</span><span style="color: #f92672">=</span><span style="color: #66d9ef">True</span><span style="color: #f8f8f2">),</span>
-    <span style="color: #f8f8f2">autoescape</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">select_autoescape([</span><span style="color: #e6db74">&#39;html&#39;</span><span style="color: #f8f8f2">])</span>
-<span style="color: #f8f8f2">)</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">raise</span> <span style="color: #a6e22e">NotImplementedError</span><span style="color: #f8f8f2">()</span>
+
+
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">TopLevelPage</span><span style="color: #f8f8f2">(Page):</span>
+    <span style="color: #f8f8f2">title</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">None</span>
+    <span style="color: #f8f8f2">filename</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">None</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">title,</span> <span style="color: #f8f8f2">filename):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">title</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">title</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">filename</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">filename</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__str__</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">title</span>
+
+    <span style="color: #a6e22e">@property</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">filename</span> <span style="color: #f92672">==</span> <span style="color: #e6db74">&#39;index&#39;</span><span style="color: #f8f8f2">:</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #e6db74">&#39;/&#39;</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #e6db74">&#39;/{}.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">filename)</span>
+
+
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Post</span><span style="color: #f8f8f2">(Page):</span>
+    <span style="color: #f8f8f2">serial_num</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">None</span>
+    <span style="color: #f8f8f2">title</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">None</span>
+    <span style="color: #f8f8f2">tags</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[]</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">serial_num,</span> <span style="color: #f8f8f2">title,</span> <span style="color: #f8f8f2">tags):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">serial_num</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">serial_num</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">title</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">title</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">tags</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">tags</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__str__</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">serial_num</span>
+
+    <span style="color: #a6e22e">@property</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">post_name</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">glob</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">glob(</span>
+            <span style="color: #e6db74">&#39;{0}/{1}-*.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(POSTS_PATH,</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">serial_num))[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #e6db74">&#39;/{0}/{1}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(POSTS_DIRNAME,</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">basename(post_name))</span>
+
+
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">Tag</span><span style="color: #f8f8f2">(Page):</span>
+    <span style="color: #f8f8f2">name</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">None</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__init__</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">name):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">name</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">name</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">__str__</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">name</span>
+
+    <span style="color: #a6e22e">@property</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">normalized_name</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">norm</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">name</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">lower()</span>
+        <span style="color: #f8f8f2">norm</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">norm</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">replace(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;-&#39;</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">norm</span>
+
+    <span style="color: #a6e22e">@property</span>
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">url</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #e6db74">&#39;/{0}/{1}.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(TAGS_DIRNAME,</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">normalized_name)</span>
 </pre></div>
-  
+
 <p>
-  We are going to need a distribution directory to write all our processed site. Let's call it
-  <code>dist</code> and create it in the same level as our script. If the directory already
-  exists, remove it and create it again. You will need to import <code>os</code> at the top.
+  Define now the collections that will represent the actual structure of your site. We will base
+  the logic on our content in plain Python lists that contain the datastructures defined above.
 </p>
 
-<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">import</span> <span style="color: #f8f8f2">os</span>
-<span style="color: #f92672">...</span>
-<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">isdir(DISTRIBUTION_DIRECTORY):</span>
-    <span style="color: #f8f8f2">shutil</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">rmtree(DISTRIBUTION_DIRECTORY)</span>
-<span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">mkdir(DISTRIBUTION_DIRECTORY)</span>
-</pre></div>
-  
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f8f8f2">TOP_LEVEL_PAGES</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span>
+    <span style="color: #f8f8f2">TopLevelPage(</span><span style="color: #e6db74">&#39;Index&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;index&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">TopLevelPage(</span><span style="color: #e6db74">&#39;Contact&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;contact&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">TopLevelPage(</span><span style="color: #e6db74">&#39;CV&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;cv&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">TopLevelPage(</span><span style="color: #e6db74">&#39;Blog&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;blog&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">TopLevelPage(</span><span style="color: #e6db74">&#39;All posts&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;old-posts&#39;</span><span style="color: #f8f8f2">)</span>
+<span style="color: #f8f8f2">]</span>
 
+<span style="color: #f8f8f2">TAGS</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span>
+    <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;software development&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;JavaScript&#39;</span><span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;automation&#39;</span><span style="color: #f8f8f2">)</span>
+<span style="color: #f8f8f2">]</span>
+
+<span style="color: #f8f8f2">POSTS</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span>
+    <span style="color: #f8f8f2">Post(</span>
+        <span style="color: #f8f8f2">serial_num</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;0001&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">title</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;Lean frontend framework based on jQuery for entrepreneurs&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">tags</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[Tag(</span><span style="color: #e6db74">&#39;software development&#39;</span><span style="color: #f8f8f2">),</span> <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;JavaScript&#39;</span><span style="color: #f8f8f2">)]</span>
+    <span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">Post(</span>
+        <span style="color: #f8f8f2">serial_num</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;0002&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">title</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;Static site generator with Python and Jinja&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">tags</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[Tag(</span><span style="color: #e6db74">&#39;software development&#39;</span><span style="color: #f8f8f2">),</span> <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;automation&#39;</span><span style="color: #f8f8f2">)]</span>
+    <span style="color: #f8f8f2">),</span>
+    <span style="color: #f8f8f2">Post(</span>
+        <span style="color: #f8f8f2">serial_num</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;0003&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">title</span><span style="color: #f92672">=</span><span style="color: #e6db74">&#39;Third Third Third Third Third&#39;</span><span style="color: #f8f8f2">,</span>
+        <span style="color: #f8f8f2">tags</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[Tag(</span><span style="color: #e6db74">&#39;software development&#39;</span><span style="color: #f8f8f2">),</span> <span style="color: #f8f8f2">Tag(</span><span style="color: #e6db74">&#39;JavaScript&#39;</span><span style="color: #f8f8f2">)]</span>
+    <span style="color: #f8f8f2">)</span>
+<span style="color: #f8f8f2">]</span>
+</pre></div>
+
+
+<p>
+  In the high level, the code that we are going to run is encapsulated in the <code>main</code>
+  function:
+</p>
+
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">():</span>
+    <span style="color: #f8f8f2">env</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">Environment(</span>
+        <span style="color: #f8f8f2">loader</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">FileSystemLoader(TEMPLATES_PATH,</span> <span style="color: #f8f8f2">followlinks</span><span style="color: #f92672">=</span><span style="color: #66d9ef">True</span><span style="color: #f8f8f2">),</span>
+        <span style="color: #f8f8f2">autoescape</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">select_autoescape([</span><span style="color: #e6db74">&#39;html&#39;</span><span style="color: #f8f8f2">])</span>
+    <span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">env</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">filters[</span><span style="color: #e6db74">&#39;url&#39;</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">url</span>
+
+    <span style="color: #f8f8f2">create_distribution_directory()</span>
+    <span style="color: #f8f8f2">all_sorted_posts</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">sort_posts(POSTS</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">values())</span>
+    <span style="color: #f8f8f2">last_post</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">all_sorted_posts[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]</span>
+    <span style="color: #f8f8f2">tags_to_posts</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">generate_blog(env)</span>
+    <span style="color: #f8f8f2">generate_blog_tags_pages(env,</span> <span style="color: #f8f8f2">tags_to_posts)</span>
+    <span style="color: #f8f8f2">last_post_content</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">get_latest_blog_post_content(last_post)</span>
+    <span style="color: #f8f8f2">generate_main_pages(env,</span> <span style="color: #f8f8f2">all_sorted_posts,</span> <span style="color: #f8f8f2">last_post_content)</span>
+    <span style="color: #f8f8f2">copy_statics()</span>
+
+
+<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">__name__</span> <span style="color: #f92672">==</span> <span style="color: #e6db74">&#39;__main__&#39;</span><span style="color: #f8f8f2">:</span>
+    <span style="color: #f8f8f2">main()</span>
+</pre></div>
+
+<p>
+  So it first creates the directory where the site will be outed. Then the blog is created: posts,
+  their tags and the latest post we will use as content of the blog index. Once the blog is done,
+  it will create any top level pages we got in our site. Finally, all statics are copied in the
+  distribution directory (CSS, icons,...).
+</p>
+
+<p>
+  To start, the distribution directory is created. If it previously exists, remove it.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">create_distribution_directory</span><span style="color: #f8f8f2">():</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">isdir(DISTRIBUTION_DIRECTORY):</span>
+        <span style="color: #f8f8f2">shutil</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">rmtree(DISTRIBUTION_DIRECTORY)</span>
+    <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">mkdir(DISTRIBUTION_DIRECTORY)</span>
+</pre></div>
+
+<p>
+  We are going to need all our blog post sorted for various tasks, like list them in our archive
+  of old posts.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">sort_posts</span><span style="color: #f8f8f2">(posts):</span>
+    <span style="color: #f8f8f2">ordered_posts</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">list(posts)</span>
+    <span style="color: #f8f8f2">ordered_posts</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">sorted(ordered_posts,</span> <span style="color: #f8f8f2">key</span><span style="color: #f92672">=</span><span style="color: #66d9ef">lambda</span> <span style="color: #f8f8f2">post:</span> <span style="color: #f8f8f2">post</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">serial_num,</span>
+                           <span style="color: #f8f8f2">reverse</span><span style="color: #f92672">=</span><span style="color: #66d9ef">True</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">ordered_posts</span>
+</pre></div>
+
+<p>
+  Now, the heavy lifting. To generate a blog we iterate through the <code>POSTS</code> lists.
+  For each post, calculate its template path, load its template, calculate its destination
+  path and stream the result. We are gonna need a reverse map with tags and the posts tagged
+  with it, son fill it here and return it at the end.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">generate_blog</span><span style="color: #f8f8f2">(env):</span>
+    <span style="color: #f8f8f2">tags_to_posts</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{}</span>
+    <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">mkdir(POST_DISTRIBUTION_PATH)</span>
+    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">post</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">POSTS:</span>
+        <span style="color: #f8f8f2">post_route</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">glob</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">glob(</span>
+            <span style="color: #e6db74">&#39;{0}/{1}-*.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(POSTS_PATH,</span> <span style="color: #f8f8f2">post</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">serial_num))[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]</span>
+        <span style="color: #f8f8f2">post_filename</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">path</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">basename(post_route)</span>
+        <span style="color: #f8f8f2">template</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">env</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">get_template(</span><span style="color: #e6db74">&#39;{0}/{1}&#39;</span>
+                                    <span style="color: #f92672">.</span><span style="color: #f8f8f2">format(POSTS_DIRNAME,</span> <span style="color: #f8f8f2">post_filename))</span>
+        <span style="color: #f8f8f2">distribution_path</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{}/{}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(POST_DISTRIBUTION_PATH,</span>
+                                           <span style="color: #f8f8f2">post_filename)</span>
+        <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">tag</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">post</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">tags:</span>
+            <span style="color: #f8f8f2">norm_tag</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">tag</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">normalized_name</span>
+            <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">norm_tag</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">tags_to_posts:</span>
+                <span style="color: #f8f8f2">tags_to_posts[norm_tag]</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">add(post)</span>
+            <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
+                <span style="color: #f8f8f2">tags_to_posts[norm_tag]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">set([post])</span>
+        <span style="color: #f8f8f2">template</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">stream(tags</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">post</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">tags)</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">dump(distribution_path)</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">tags_to_posts</span>
+</pre></div>
+
+<p>
+  With the map we have built, we can now create tag pages listing each post they contain. Tag pages
+  are built similarly, but now we need as context the post set each of them contain.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">generate_blog_tags_pages</span><span style="color: #f8f8f2">(env,</span> <span style="color: #f8f8f2">tags_to_posts):</span>
+    <span style="color: #f8f8f2">os</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">mkdir(TAGS_DISTRIBUTION_PATH)</span>
+    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">norm_tag,</span> <span style="color: #f8f8f2">posts</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">tags_to_posts</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">items():</span>
+        <span style="color: #f8f8f2">tag</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">get_tag_from_normalized_name(norm_tag)</span>
+        <span style="color: #f8f8f2">template</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">env</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">get_template(</span><span style="color: #e6db74">&#39;{}/blog-tag.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(VIRTUAL_PATH))</span>
+        <span style="color: #f8f8f2">distribution_path</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{0}/{1}.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(TAGS_DISTRIBUTION_PATH,</span>
+                                                  <span style="color: #f8f8f2">norm_tag)</span>
+        <span style="color: #f8f8f2">template</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">stream(tag</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">tag,</span> <span style="color: #f8f8f2">posts</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">sort_posts(posts))</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">dump(</span>
+            <span style="color: #f8f8f2">distribution_path)</span>
+</pre></div>
+
+<p>
+  Now fetch the latest blog post content. We will embed it into the blog main page, passing it as
+  context once we built it. Clean up the Jinja tags that are only used when rendered in its own
+  page.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">get_latest_blog_post_content</span><span style="color: #f8f8f2">(last_post):</span>
+    <span style="color: #f8f8f2">last_post_path</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{0}/{1}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(TEMPLATES_PATH,</span> <span style="color: #f8f8f2">last_post</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">url)</span>
+    <span style="color: #66d9ef">with</span> <span style="color: #f8f8f2">open(last_post_path)</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">latest:</span>
+        <span style="color: #f8f8f2">last_post_content</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">latest</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">read()</span>
+    <span style="color: #f8f8f2">last_post_content</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">last_post_content</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">replace(</span>
+        <span style="color: #e6db74">&#39;{{ '{% extends \'blog.html\' %}' }}&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;&#39;</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">last_post_content</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">last_post_content</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">replace(</span>
+        <span style="color: #e6db74">&#39;{{ '{% block post %}' }}&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;&#39;</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">last_post_content</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">last_post_content</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">replace(</span>
+        <span style="color: #e6db74">&#39;{{ '{% endblock %}' }}&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;&#39;</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">last_post_content</span>
+</pre></div>
+
+<p>
+  Remember to print this content in your <code>blog.html</code>
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f8f8f2">{{ '{{' }}</span> <span style="color: #f8f8f2">last_post_content</span><span style="color: #f92672">|</span><span style="color: #f8f8f2">safe</span> <span style="color: #f8f8f2">{{ '}}' }}</span>
+</pre></div>
+
+<p>
+  It is time now to generate the main pages. Those are the simplest ones, but some of them will
+  need the previously generated context. So pass it to all of them, some will use it, others
+  won't.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">generate_main_pages</span><span style="color: #f8f8f2">(env,</span> <span style="color: #f8f8f2">sorted_posts,</span> <span style="color: #f8f8f2">last_post_content):</span>
+    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">page</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">TOP_LEVEL_PAGES:</span>
+        <span style="color: #f8f8f2">template_name</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{}.html&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(page</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">filename)</span>
+        <span style="color: #f8f8f2">template</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">env</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">get_template(template_name)</span>
+        <span style="color: #f8f8f2">distribution_path</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;{}/{}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(DISTRIBUTION_DIRECTORY,</span>
+                                           <span style="color: #f8f8f2">template_name)</span>
+        <span style="color: #f8f8f2">template</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">stream(</span>
+            <span style="color: #f8f8f2">posts</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">sorted_posts,</span>
+            <span style="color: #f8f8f2">last_post_content</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">last_post_content</span>
+        <span style="color: #f8f8f2">)</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">dump(distribution_path)</span>
+</pre></div>
+
+<p>
+  Finally, copy the static files you have. These can be CSS source code, images, etc. Just
+  copy the tree as is into the distribution directory.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">def</span> <span style="color: #a6e22e">copy_statics</span><span style="color: #f8f8f2">():</span>
+    <span style="color: #f8f8f2">shutil</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">copytree(STATICS_DIRECTORY,</span> <span style="color: #e6db74">&#39;{}/{}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(</span>
+        <span style="color: #f8f8f2">DISTRIBUTION_DIRECTORY,</span>
+        <span style="color: #f8f8f2">STATICS_DIRECTORY</span>
+    <span style="color: #f8f8f2">))</span>
+</pre></div>
+
+<p>
+  And it's done! You get the benefits of automation plus simplicity. Change design, add
+  cool effects or built a more complex structure from here. This gives you a baseline
+  to get full control of your platform at minimum efford.
+</p>
 
 {% endblock %}

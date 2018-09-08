@@ -20,10 +20,14 @@ TODO
 ----
 
 ### Before Release
+- Cambiar fuente de texto a una más suave
+- Add date to posts
 - Google Analytics
 - Up to 3 blog posts before release
+- License
 
 ### Others
 - Automate deployment with ansible
 - Get VM in Digital Ocean, terraform
 - Projects page
+- JSON Oriented

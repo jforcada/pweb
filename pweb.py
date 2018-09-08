@@ -110,23 +110,23 @@ TAGS = [
     Tag('automation')
 ]
 
-POSTS = {
-    '0001': Post(
+POSTS = [
+    Post(
         serial_num='0001',
         title='Lean frontend framework based on jQuery for entrepreneurs',
         tags=[Tag('software development'), Tag('JavaScript')]
     ),
-    '0002': Post(
+    Post(
         serial_num='0002',
         title='Static site generator with Python and Jinja',
         tags=[Tag('software development'), Tag('automation')]
     ),
-    '0003': Post(
+    Post(
         serial_num='0003',
         title='Third Third Third Third Third',
         tags=[Tag('software development'), Tag('JavaScript')]
     )
-}
+]
 
 
 def url(value):
@@ -164,16 +164,14 @@ def get_latest_blog_post_content(last_post):
 def generate_blog(env):
     tags_to_posts = {}
     os.mkdir(POST_DISTRIBUTION_PATH)
-    for post_serial_num, post in POSTS.items():
+    for post in POSTS:
         post_route = glob.glob(
-            '{0}/{1}-*.html'.format(POSTS_PATH, post_serial_num))[0]
+            '{0}/{1}-*.html'.format(POSTS_PATH, post.serial_num))[0]
         post_filename = os.path.basename(post_route)
         template = env.get_template('{0}/{1}'
                                     .format(POSTS_DIRNAME, post_filename))
         distribution_path = '{}/{}'.format(POST_DISTRIBUTION_PATH,
                                            post_filename)
-        post_serial_num = post_filename.split('-')[0]
-
         for tag in post.tags:
             norm_tag = tag.normalized_name
             if norm_tag in tags_to_posts:
@@ -207,10 +205,6 @@ def generate_main_pages(env, sorted_posts, last_post_content):
         ).dump(distribution_path)
 
 
-def clean_temp_latest_blog_post():
-    os.remove('content/templates/posts/latest.html')
-
-
 def main():
     env = Environment(
         loader=FileSystemLoader(TEMPLATES_PATH, followlinks=True),
@@ -219,7 +213,7 @@ def main():
     env.filters['url'] = url
 
     create_distribution_directory()
-    all_sorted_posts = sort_posts(POSTS.values())
+    all_sorted_posts = sort_posts(POSTS)
     last_post = all_sorted_posts[0]
     tags_to_posts = generate_blog(env)
     generate_blog_tags_pages(env, tags_to_posts)
