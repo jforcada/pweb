@@ -1,20 +1,25 @@
 import os
 import glob
 import shutil
+import json
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
+CONTENT_FILE_PATH = 'content/content.json'
 TEMPLATES_PATH = 'content/templates'
 POSTS_PATH = '{}/posts'.format(TEMPLATES_PATH)
 POSTS_DIRNAME = 'posts'
-
 TAGS_DIRNAME = 'tags'
-
 VIRTUAL_PATH = 'virtual'
 STATICS_DIRECTORY = 'static'
 DISTRIBUTION_DIRECTORY = 'dist'
 POST_DISTRIBUTION_PATH = '{}/posts'.format(DISTRIBUTION_DIRECTORY)
 TAGS_DISTRIBUTION_PATH = '{}/tags'.format(DISTRIBUTION_DIRECTORY)
+
+
+TOP_LEVEL_PAGES = []
+POSTS = []
+TAGS = []
 
 
 class Page(object):
@@ -96,37 +101,21 @@ def sort_posts(posts):
     return ordered_posts
 
 
-TOP_LEVEL_PAGES = [
-    TopLevelPage('Index', 'index'),
-    TopLevelPage('Contact', 'contact'),
-    TopLevelPage('CV', 'cv'),
-    TopLevelPage('Blog', 'blog'),
-    TopLevelPage('All posts', 'old-posts')
-]
+def load_site(content_file_path):
+    with open(content_file_path) as f:
+        data = json.load(f)
 
-TAGS = [
-    Tag('software development'),
-    Tag('JavaScript'),
-    Tag('automation')
-]
-
-POSTS = [
-    Post(
-        serial_num='0001',
-        title='Lean frontend framework based on jQuery for entrepreneurs',
-        tags=[Tag('software development'), Tag('JavaScript')]
-    ),
-    Post(
-        serial_num='0002',
-        title='Static site generator with Python and Jinja',
-        tags=[Tag('software development'), Tag('automation')]
-    ),
-    Post(
-        serial_num='0003',
-        title='Third Third Third Third Third',
-        tags=[Tag('software development'), Tag('JavaScript')]
-    )
-]
+    for page in data['topLevel']:
+        TOP_LEVEL_PAGES.append(TopLevelPage(page['title'], page['filename']))
+    for post in data['posts']:
+        POSTS.append(
+            Post(
+                post['serialNum'],
+                post['title'],
+                [Tag(tag) for tag in post['tags']])
+            )
+    for tag in data['tags']:
+        TAGS.append(Tag(tag))
 
 
 def url(value):
@@ -213,6 +202,7 @@ def main():
     env.filters['url'] = url
 
     create_distribution_directory()
+    load_site(CONTENT_FILE_PATH)
     all_sorted_posts = sort_posts(POSTS)
     last_post = all_sorted_posts[0]
     tags_to_posts = generate_blog(env)

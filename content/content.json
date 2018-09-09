@@ -1,0 +1,31 @@
+{
+    "topLevel": [
+        {"title": "Index", "filename": "index"},
+        {"title": "Contact", "filename": "contact"},
+        {"title": "CV", "filename": "cv"},
+        {"title": "Blog", "filename": "blog"},
+        {"title": "All posts", "filename": "old-posts"}
+    ],
+    "posts": [
+        {
+            "serialNum": "0001",
+            "title": "Lean frontend framework based on jQuery for entrepreneurs",
+            "tags": ["software development", "JavaScript"]
+        },
+        {
+            "serialNum": "0002",
+            "title": "Static site generator with Python and Jinja",
+            "tags": ["software development", "automation"]
+        },
+        {
+            "serialNum": "0003",
+            "title": "Third Third Third Third Third",
+            "tags": ["software development", "JavaScript"]
+        }
+    ],
+    "tags": [
+        "software development",
+        "JavaScript",
+        "automation"
+    ]
+}
