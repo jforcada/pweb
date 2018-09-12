@@ -14,20 +14,18 @@ Format code
 
 http://hilite.me/
 
-With `monokai` theme. For plain output `autumn`.
+With `monokai` theme. For plain output YAML and `autumn`.
 
 TODO
 ----
 
 ### Before Release
-- Cambiar fuente de texto a una más suave
 - Add date to posts
 - Google Analytics
-- Up to 3 blog posts before release
 - License
+- Robots.txt
 
 ### Others
 - Automate deployment with ansible
 - Get VM in Digital Ocean, terraform
 - Projects page
-- JSON Oriented
