@@ -4,7 +4,7 @@
   </div>
   <div class="pure-u-1-2">
     <ul class="post-tags">
-      {% for tag in tags %}
+      {% for tag in post.tags %}
       <li><a class="pure-button" href="{{tag.url}}"><i class="fas fa-tag"></i> {{tag.name}}</a></li>
       {% endfor %}
     </ul>

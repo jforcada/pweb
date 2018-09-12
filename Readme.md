@@ -22,7 +22,7 @@ TODO
 ### Before Release
 - Add date to posts
 - Google Analytics
-- License
+- Footer: logo, license
 - Robots.txt
 
 ### Others

@@ -2,7 +2,7 @@ import os
 import glob
 import shutil
 import json
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 
 
 CONTENT_FILE_PATH = 'content/content.json'
@@ -18,6 +18,7 @@ TAGS_DISTRIBUTION_PATH = '{}/tags'.format(DISTRIBUTION_DIRECTORY)
 
 
 TOP_LEVEL_PAGES = []
+BLOG_PAGE = None
 POSTS = []
 TAGS = []
 
@@ -102,19 +103,23 @@ def sort_posts(posts):
 
 
 def load_site(content_file_path):
+    global BLOG_PAGE
     with open(content_file_path) as f:
         data = json.load(f)
 
     for page in data['topLevel']:
         TOP_LEVEL_PAGES.append(TopLevelPage(page['title'], page['filename']))
-    for post in data['posts']:
-        POSTS.append(
-            Post(
-                post['serialNum'],
-                post['title'],
-                [Tag(tag) for tag in post['tags']])
-            )
-    for tag in data['tags']:
+
+    BLOG_PAGE = TopLevelPage(data['blog']['title'], data['blog']['filename'])
+    for post in data['blog']['posts']:
+        if 'hide' not in post or not post['hide']:
+            POSTS.append(
+                Post(
+                    post['serialNum'],
+                    post['title'],
+                    [Tag(tag) for tag in post['tags']])
+                )
+    for tag in data['blog']['tags']:
         TAGS.append(Tag(tag))
 
 
@@ -122,6 +127,9 @@ def url(value):
     for page in TOP_LEVEL_PAGES:
         if value == page.filename:
             return page.url
+
+    if value == BLOG_PAGE.filename:
+        return BLOG_PAGE.url
 
 
 def create_distribution_directory():
@@ -150,9 +158,11 @@ def get_latest_blog_post_content(last_post):
     return last_post_content
 
 
-def generate_blog(env):
+def generate_blog(env, last_post):
     tags_to_posts = {}
     os.mkdir(POST_DISTRIBUTION_PATH)
+
+    # Generate posts
     for post in POSTS:
         post_route = glob.glob(
             '{0}/{1}-*.html'.format(POSTS_PATH, post.serial_num))[0]
@@ -167,7 +177,19 @@ def generate_blog(env):
                 tags_to_posts[norm_tag].add(post)
             else:
                 tags_to_posts[norm_tag] = set([post])
-        template.stream(tags=post.tags).dump(distribution_path)
+        template.stream(post=post).dump(distribution_path)
+
+    # Generate front page
+    last_post_raw = get_latest_blog_post_content(last_post)
+    last_post_template = env.from_string(last_post_raw)
+    # last_post_template = Template(last_post_raw)
+    last_post_rendered = last_post_template.render(post=last_post)
+
+    template_name = '{}.html'.format(BLOG_PAGE.filename)
+    template = env.get_template(template_name)
+    distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
+                                       template_name)
+    template.stream(last_post=last_post_rendered).dump(distribution_path)
     return tags_to_posts
 
 
@@ -182,15 +204,14 @@ def generate_blog_tags_pages(env, tags_to_posts):
             distribution_path)
 
 
-def generate_main_pages(env, sorted_posts, last_post_content):
+def generate_main_pages(env, sorted_posts):
     for page in TOP_LEVEL_PAGES:
         template_name = '{}.html'.format(page.filename)
         template = env.get_template(template_name)
         distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
                                            template_name)
         template.stream(
-            posts=sorted_posts,
-            last_post_content=last_post_content
+            posts=sorted_posts
         ).dump(distribution_path)
 
 
@@ -205,10 +226,10 @@ def main():
     load_site(CONTENT_FILE_PATH)
     all_sorted_posts = sort_posts(POSTS)
     last_post = all_sorted_posts[0]
-    tags_to_posts = generate_blog(env)
+    tags_to_posts = generate_blog(env, last_post)
     generate_blog_tags_pages(env, tags_to_posts)
-    last_post_content = get_latest_blog_post_content(last_post)
-    generate_main_pages(env, all_sorted_posts, last_post_content)
+    # last_post_content = get_latest_blog_post_content(last_post)
+    generate_main_pages(env, all_sorted_posts)
     copy_statics()
 
 
