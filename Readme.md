@@ -20,10 +20,7 @@ TODO
 ----
 
 ### Before Release
-- Add date to posts
 - Google Analytics
-- Footer: logo, license
-- Robots.txt
 
 ### Others
 - Automate deployment with ansible

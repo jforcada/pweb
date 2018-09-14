@@ -2,7 +2,7 @@ import os
 import glob
 import shutil
 import json
-from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 CONTENT_FILE_PATH = 'content/content.json'
@@ -54,9 +54,10 @@ class Post(Page):
     title = None
     tags = []
 
-    def __init__(self, serial_num, title, tags):
+    def __init__(self, serial_num, title, date, tags):
         self.serial_num = serial_num
         self.title = title
+        self.date = date
         self.tags = tags
 
     def __str__(self):
@@ -117,6 +118,7 @@ def load_site(content_file_path):
                 Post(
                     post['serialNum'],
                     post['title'],
+                    post['date'],
                     [Tag(tag) for tag in post['tags']])
                 )
     for tag in data['blog']['tags']:
@@ -182,7 +184,6 @@ def generate_blog(env, last_post):
     # Generate front page
     last_post_raw = get_latest_blog_post_content(last_post)
     last_post_template = env.from_string(last_post_raw)
-    # last_post_template = Template(last_post_raw)
     last_post_rendered = last_post_template.render(post=last_post)
 
     template_name = '{}.html'.format(BLOG_PAGE.filename)
@@ -215,6 +216,13 @@ def generate_main_pages(env, sorted_posts):
         ).dump(distribution_path)
 
 
+def copy_robotstxt():
+    shutil.copy(
+        '{}/robots.txt'.format(TEMPLATES_PATH),
+        '{}/robots.txt'.format(DISTRIBUTION_DIRECTORY)
+    )
+
+
 def main():
     env = Environment(
         loader=FileSystemLoader(TEMPLATES_PATH, followlinks=True),
@@ -228,8 +236,8 @@ def main():
     last_post = all_sorted_posts[0]
     tags_to_posts = generate_blog(env, last_post)
     generate_blog_tags_pages(env, tags_to_posts)
-    # last_post_content = get_latest_blog_post_content(last_post)
     generate_main_pages(env, all_sorted_posts)
+    copy_robotstxt()
     copy_statics()
 
 
