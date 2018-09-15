@@ -2,6 +2,7 @@ import os
 import glob
 import shutil
 import json
+import argparse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
@@ -160,7 +161,7 @@ def get_latest_blog_post_content(last_post):
     return last_post_content
 
 
-def generate_blog(env, last_post):
+def generate_blog(env, last_post, prog_args):
     tags_to_posts = {}
     os.mkdir(POST_DISTRIBUTION_PATH)
 
@@ -179,7 +180,7 @@ def generate_blog(env, last_post):
                 tags_to_posts[norm_tag].add(post)
             else:
                 tags_to_posts[norm_tag] = set([post])
-        template.stream(post=post).dump(distribution_path)
+        template.stream(post=post, prog_args=prog_args).dump(distribution_path)
 
     # Generate front page
     last_post_raw = get_latest_blog_post_content(last_post)
@@ -190,29 +191,32 @@ def generate_blog(env, last_post):
     template = env.get_template(template_name)
     distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
                                        template_name)
-    template.stream(last_post=last_post_rendered).dump(distribution_path)
+    template.stream(
+        last_post=last_post_rendered, prog_args=prog_args
+    ).dump(distribution_path)
     return tags_to_posts
 
 
-def generate_blog_tags_pages(env, tags_to_posts):
+def generate_blog_tags_pages(env, tags_to_posts, prog_args):
     os.mkdir(TAGS_DISTRIBUTION_PATH)
     for norm_tag, posts in tags_to_posts.items():
         tag = get_tag_from_normalized_name(norm_tag)
         template = env.get_template('{}/blog-tag.html'.format(VIRTUAL_PATH))
         distribution_path = '{0}/{1}.html'.format(TAGS_DISTRIBUTION_PATH,
                                                   norm_tag)
-        template.stream(tag=tag, posts=sort_posts(posts)).dump(
-            distribution_path)
+        template.stream(
+            tag=tag, posts=sort_posts(posts), prog_args=prog_args
+        ).dump(distribution_path)
 
 
-def generate_main_pages(env, sorted_posts):
+def generate_main_pages(env, sorted_posts, prog_args):
     for page in TOP_LEVEL_PAGES:
         template_name = '{}.html'.format(page.filename)
         template = env.get_template(template_name)
         distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
                                            template_name)
         template.stream(
-            posts=sorted_posts
+            posts=sorted_posts, prog_args=prog_args
         ).dump(distribution_path)
 
 
@@ -224,6 +228,14 @@ def copy_robotstxt():
 
 
 def main():
+
+    parser = argparse.ArgumentParser(description='Generate a static site')
+    parser.add_argument(
+        '--prod', dest='production', action='store_true',
+        help='compile the site with production profile (analytics,...)'
+    )
+    args = parser.parse_args()
+
     env = Environment(
         loader=FileSystemLoader(TEMPLATES_PATH, followlinks=True),
         autoescape=select_autoescape(['html'])
@@ -234,9 +246,9 @@ def main():
     load_site(CONTENT_FILE_PATH)
     all_sorted_posts = sort_posts(POSTS)
     last_post = all_sorted_posts[0]
-    tags_to_posts = generate_blog(env, last_post)
-    generate_blog_tags_pages(env, tags_to_posts)
-    generate_main_pages(env, all_sorted_posts)
+    tags_to_posts = generate_blog(env, last_post, args)
+    generate_blog_tags_pages(env, tags_to_posts, args)
+    generate_main_pages(env, all_sorted_posts, args)
     copy_robotstxt()
     copy_statics()
 
