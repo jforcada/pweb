@@ -17,6 +17,7 @@ DISTRIBUTION_DIRECTORY = 'dist'
 POST_DISTRIBUTION_PATH = '{}/posts'.format(DISTRIBUTION_DIRECTORY)
 TAGS_DISTRIBUTION_PATH = '{}/tags'.format(DISTRIBUTION_DIRECTORY)
 
+DEFAULT_IMG_URL = '/static/logo1.svg.png'
 
 TOP_LEVEL_PAGES = []
 BLOG_PAGE = None
@@ -25,19 +26,30 @@ TAGS = []
 
 
 class Page(object):
+
+    def __init__(self, title, description, img_url=None):
+        self.title = title
+        self.description = description
+        self._img_url = img_url
+
     def __str__(self):
         return 'Abstract Page'
+
+    @property
+    def img_url(self):
+        if self._img_url is None:
+            return DEFAULT_IMG_URL
+        return self._img_url
 
     def url(self):
         raise NotImplementedError()
 
 
 class TopLevelPage(Page):
-    title = None
     filename = None
 
-    def __init__(self, title, filename):
-        self.title = title
+    def __init__(self, title, description, img_url, filename):
+        super().__init__(title, description, img_url)
         self.filename = filename
 
     def __str__(self):
@@ -52,12 +64,11 @@ class TopLevelPage(Page):
 
 class Post(Page):
     serial_num = None
-    title = None
     tags = []
 
-    def __init__(self, serial_num, title, date, tags):
+    def __init__(self, serial_num, title, description, img_url, date, tags):
+        super().__init__(title, description, img_url)
         self.serial_num = serial_num
-        self.title = title
         self.date = date
         self.tags = tags
 
@@ -76,6 +87,8 @@ class Tag(Page):
 
     def __init__(self, name):
         self.name = name
+        self.title = name
+        self.description = 'All posts on {}'.format(name)
 
     def __str__(self):
         return self.name
@@ -110,15 +123,25 @@ def load_site(content_file_path):
         data = json.load(f)
 
     for page in data['topLevel']:
-        TOP_LEVEL_PAGES.append(TopLevelPage(page['title'], page['filename']))
+        TOP_LEVEL_PAGES.append(TopLevelPage(
+            page['title'],
+            page['description'],
+            page.get('img_url'),
+            page['filename']))
 
-    BLOG_PAGE = TopLevelPage(data['blog']['title'], data['blog']['filename'])
+    BLOG_PAGE = TopLevelPage(
+        data['blog']['title'],
+        data['blog']['description'],
+        data['blog'].get('img_url'),
+        data['blog']['filename'])
     for post in data['blog']['posts']:
         if 'hide' not in post or not post['hide']:
             POSTS.append(
                 Post(
                     post['serialNum'],
                     post['title'],
+                    post['description'],
+                    page.get('img_url'),
                     post['date'],
                     [Tag(tag) for tag in post['tags']])
                 )
@@ -180,19 +203,19 @@ def generate_blog(env, last_post, prog_args):
                 tags_to_posts[norm_tag].add(post)
             else:
                 tags_to_posts[norm_tag] = set([post])
-        template.stream(post=post, prog_args=prog_args).dump(distribution_path)
+        template.stream(page=post, prog_args=prog_args).dump(distribution_path)
 
     # Generate front page
     last_post_raw = get_latest_blog_post_content(last_post)
     last_post_template = env.from_string(last_post_raw)
-    last_post_rendered = last_post_template.render(post=last_post)
+    last_post_rendered = last_post_template.render(page=last_post)
 
     template_name = '{}.html'.format(BLOG_PAGE.filename)
     template = env.get_template(template_name)
     distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
                                        template_name)
     template.stream(
-        last_post=last_post_rendered, prog_args=prog_args
+        page=BLOG_PAGE, last_post=last_post_rendered, prog_args=prog_args
     ).dump(distribution_path)
     return tags_to_posts
 
@@ -205,7 +228,7 @@ def generate_blog_tags_pages(env, tags_to_posts, prog_args):
         distribution_path = '{0}/{1}.html'.format(TAGS_DISTRIBUTION_PATH,
                                                   norm_tag)
         template.stream(
-            tag=tag, posts=sort_posts(posts), prog_args=prog_args
+            page=tag, posts=sort_posts(posts), prog_args=prog_args
         ).dump(distribution_path)
 
 
@@ -216,7 +239,7 @@ def generate_main_pages(env, sorted_posts, prog_args):
         distribution_path = '{}/{}'.format(DISTRIBUTION_DIRECTORY,
                                            template_name)
         template.stream(
-            posts=sorted_posts, prog_args=prog_args
+            page=page, posts=sorted_posts, prog_args=prog_args
         ).dump(distribution_path)
 
 
@@ -228,7 +251,6 @@ def copy_robotstxt():
 
 
 def main():
-
     parser = argparse.ArgumentParser(description='Generate a static site')
     parser.add_argument(
         '--prod', dest='production', action='store_true',

@@ -1,10 +1,10 @@
 <div class="pure-g">
   <div class="pure-u-1-2">
-    <span class="post-details"><em>{{ post.date }} by Jaime Forcada</em></span>
+    <span class="post-details"><em>{{ page.date }} by Jaime Forcada</em></span>
   </div>
   <div class="pure-u-1-2">
     <ul class="post-tags">
-      {% for tag in post.tags %}
+      {% for tag in page.tags %}
       <li><a class="pure-button" href="{{tag.url}}"><i class="fas fa-tag"></i> {{tag.name}}</a></li>
       {% endfor %}
     </ul>

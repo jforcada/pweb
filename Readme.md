@@ -11,7 +11,7 @@ To serve it:
 
 To compile it for production:
 
-    $ python pweb.py
+    $ python pweb.py --prod
 
 Format code
 -----------
@@ -23,6 +23,5 @@ With `monokai` theme. For plain output YAML and `autumn`.
 TODO
 ----
 
-- Automate deployment with ansible
-- Get VM in Digital Ocean, terraform
 - Projects page
+- Responsive
