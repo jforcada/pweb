@@ -1,0 +1,140 @@
+{% extends "blog.html" %}
+
+{% block post %}
+
+<h3>{{ page.title }}</h3>
+{% include 'includes/blog-post-details.html' %}
+
+<p>
+  The industry is plagued by daily news on the latest languajes, methodologies and frameworks that
+  promise us the silver bullet to make all our development straightforward. But all them come
+  to a cost of knowing their particularities, ins & outs, tooling around them, etc. This is for
+  entrepreneurs who cannot afford the high cost of a modern JavaScript framework, as time to
+  market is often the most important value for us. I'm going to show you how to construct a very
+  simple jQuery based mechanism.
+</p>
+
+<p>
+  I'm assuming your project is using server side rendering, therefore what we only need from our
+  frontend is to be able to respond to user interaction, do some AJAX calls and ocassionaly render
+  little pieces of DOM.
+</p>
+
+<p>
+  First, include jQuery in your HTML header. Download it and add it to your build system or add
+  it to your base template with:
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+  <table>
+    <tr>
+      <td>
+        <pre style="margin: 0; line-height: 125%"><span style="color: #f92672">&lt;script </span><span style="color: #a6e22e">src=</span><span style="color: #e6db74">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js&quot;</span><span style="color: #f92672">&gt;&lt;/script&gt;</span></pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>
+  The basic, and unique component in our framework will be the module loader. It will be
+  responsible of initializing the modules specified in our templates by notation. I will
+  use the prefix <code>MF</code> (Micro Framework) to avoid polluting the global namespace.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #66d9ef">var</span> <span style="color: #a6e22e">MF</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">window.</span><span style="color: #a6e22e">MF</span> <span style="color: #f92672">||</span> <span style="color: #f8f8f2">{};</span>
+
+<span style="color: #a6e22e">MF</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">modules</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">MF</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">modules</span> <span style="color: #f92672">||</span> <span style="color: #f8f8f2">{};</span>
+
+<span style="color: #a6e22e">$</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+
+  <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">loadModule</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">module</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">MF</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">modules</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">module</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+      <span style="color: #a6e22e">module</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">init</span><span style="color: #f8f8f2">();</span>
+    <span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+      <span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">error</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;module not found: &#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">}</span>
+  <span style="color: #f8f8f2">}</span>
+
+  <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">moduleRequests</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">$</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;[data-js-module]&#39;</span><span style="color: #f8f8f2">);</span>
+  <span style="color: #a6e22e">moduleRequests</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">each</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mr</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">moduleIds</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">$</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">mr</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">attr</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;data-js-module&#39;</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">split</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #a6e22e">moduleIds</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">forEach</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+      <span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;loading... &#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">);</span>
+      <span style="color: #a6e22e">loadModule</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">moduleId</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">});</span>
+  <span style="color: #f8f8f2">});</span>
+
+<span style="color: #f8f8f2">});</span>
+  </pre>
+</div>
+  
+<p>
+  Let's see how it works. First of all create the new namespace <code>MF</code>, and another
+  namespace inside it called <code>modules</code> if they don't exist.
+</p>
+
+<p>
+  With the call to <code>$</code> we register a function to be run on the trigger of the
+  <code>load</code> event. The function first gets all HTML data attributes called
+  <code>data-js-module</code>. Then, for each one we get the value of the attribute and split it
+  on white spaces. These string values are the names of the modules we are going to load.
+</p>
+
+<p>
+  For each of these module names, pass it as parameter to the previously defined
+  <code>loadModule</code> function. Locate it in the <code>MF.modules</code> namespace we defined
+  above and call its <code>init</code> function.
+</p>
+
+<p>
+  So now let's define our module. For example:
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #a6e22e">MF</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">modules</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SayHello</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
+
+  <span style="color: #a6e22e">init</span><span style="color: #f92672">:</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;Hello from Micro Framework!&#39;</span><span style="color: #f8f8f2">);</span>
+  <span style="color: #f8f8f2">}</span>
+
+<span style="color: #f8f8f2">};</span>
+</pre></div>
+
+<p>
+  And claim it from your template:
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">...
+  <span style="color: #f92672">&lt;div</span> <span style="color: #a6e22e">class=</span><span style="color: #e6db74">&quot;row section-content&quot;</span><span style="color: #f92672">&gt;</span>
+    <span style="color: #f92672">&lt;div</span> <span style="color: #a6e22e">data-js-module=</span><span style="color: #e6db74">&quot;SayHello&quot;</span><span style="color: #f92672">&gt;</span>
+      ...
+    <span style="color: #f92672">&lt;/div&gt;</span>
+  <span style="color: #f92672">&lt;/div&gt;</span>
+...
+</pre></div>
+
+<p>
+  Remember to include the JavaScript files in your builder or base template in the following order:
+</p>
+
+<ol>
+  <li>jQuery</li>
+  <li>Micro Framework loader</li>
+  <li>Modules</li>
+</ol>
+
+<p>
+  If you now access your page from there, and open the developer tools, you should see:
+</p>
+
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">loading... SayHello
+Hello from Micro Framework!
+</pre></div>
+
+<p>
+  As you can see, having a well structured frontend code is much more simple that what these
+  new frontend frameworks want to sell us. For simple projects or even the more complicated
+  ones, we can get a good cheap kickstart for our projects.
+</p>
+
+{% endblock %}

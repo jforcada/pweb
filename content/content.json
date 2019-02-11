@@ -1,0 +1,43 @@
+{
+    "topLevel": [
+        {"title": "Home", "filename": "index", "description": "Jaime Forcada website"},
+        {"title": "Contact", "filename": "contact", "description": "Contact me if you wish"},
+        {"title": "CV", "filename": "cv", "description": "Jaime Forcada curriculum"},
+        {"title": "All posts", "filename": "old-posts", "description": "All blog posts until today"}
+    ],
+    "blog": {
+        "title": "Blog",
+        "filename": "blog",
+        "description": "Jaime Forcada's blog",
+        "posts": [
+            {
+                "serialNum": "0001",
+                "title": "Lean frontend framework based on jQuery for entrepreneurs",
+                "description": "A little JavaScript snippet to build your frontend around",
+                "date": "2019-01-09",
+                "tags": ["software development", "JavaScript"]
+            },
+            {
+                "serialNum": "0002",
+                "title": "Static site generator with Python and Jinja",
+                "description": "A very simple static site generator idea",
+                "date": "2019-02-15",
+                "tags": ["software development", "automation"],
+                "hide": true
+            },
+            {
+                "serialNum": "0003",
+                "title": "Django testing I: User acceptance tests",
+                "description": "Kickoff the testing of your Django project",
+                "date": "2019-03-10",
+                "tags": ["software development", "JavaScript"],
+                "hide": true
+            }
+        ],
+        "tags": [
+            "software development",
+            "JavaScript",
+            "automation"
+        ]
+    }
+}

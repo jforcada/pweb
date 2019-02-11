@@ -1,0 +1,173 @@
+{% extends "blog.html" %}
+
+{% block post %}
+
+<h3>{{ page.title }}</h3>
+{% include 'includes/blog-post-details.html' %}
+
+<p>
+  Django offers some tools for testing. It manages many things for us, like the creation of an
+  ephemeral test database so our tests don't destroy our production or development data set.
+  Or providing us with an integrated test runner that understands the app structure.
+</p>  
+
+<p>
+  The main tool that allows us to write acceptance tests is the test client. With it, we are
+  going to be able to perform HTTP requests against our Django project. This will allow us
+  to test our full server side stack from a pretty similar user perspective.
+</p>
+
+<p>
+  Create your tests inside your app, a <code>tests.py</code> file. To start, it is enough 
+  our tests live in a single file. Later it will be refactored if it grows enough.
+</p>
+
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">myapp/
+  ├── admin.py
+  ├── apps.py
+  ├── __init__.py
+  ├── migrations
+  │   ├── __init__.py
+  │   └── ...
+  ├── models.py
+  ├── static
+  │   └── ...
+  ├── templates
+  │   └── ...
+  ├── tests.py
+  ├── urls.py
+  └── views.py
+  </pre></div>
+
+<p>
+  In your <code>tests.py</code> file, import Django's <code>TestCase</code> that will help us
+  construct our test suite by inheritance. Start also by creating a simple <code>setUp</code>
+  function to run before each test, which will call a little helper to create a user. 
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #f92672">from</span> <span style="color: #f8f8f2">django.test</span> <span style="color: #66d9ef">import</span> <span style="color: #f8f8f2">TestCase</span>
+
+<span style="color: #66d9ef">class</span> <span style="color: #a6e22e">MyAppTestCase</span><span style="color: #f8f8f2">(TestCase):</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">create_user</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">user</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">User</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">objects</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">create_user(</span><span style="color: #e6db74">&#39;someuser&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;some@email.com&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;passw&#39;</span><span style="color: #f8f8f2">)</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">setUp</span><span style="color: #f8f8f2">(self):</span>
+	<span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">create_user()</span>
+</pre></div>
+
+<p>
+  Suppose that in our application lives a view that manages the user profile. This view is a
+  form that gets printed with the user personal data (name, email, etc) prefilled, and also
+  allows editing those fields and submitting for an update. It could be managed by a
+  <code>FormView</code> for example to manage <code>GET</code> and <code>POST</code> requests
+  to our view.
+</p>
+
+<p>
+  Now it we are ready to create the first test. All tests should start with the prefix
+  <code>test_</code> so the Django test runner detects it as a test. So add this simple test
+  to our suite:
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_get_user_profile</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">force_login(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user)</span>
+
+        <span style="color: #f8f8f2">profile_url</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">reverse(</span><span style="color: #e6db74">&#39;myapp:profile&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">args</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">id])</span>
+	<span style="color: #f8f8f2">response</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">get(profile_url)</span>
+
+	<span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertEqual(</span><span style="color: #ae81ff">200</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">response</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">status_code)</span>
+</pre></div>
+
+<p>
+  First, keep in mind that what first run in our test is the <code>setUp</code> function we
+  defined previously, so once our test starts we already have a new user available to us in
+  <code>self.user</code>.
+</p>
+
+<p>
+  What our test needs first is use the Django test <code>Client</code> to authenticate our
+  recently created user. The test client is made available in <code>self.client</code> by
+  Django's <code>TestCase</code> because of the inheritance in our suite. By authenticating
+  the user, a new session will get created in our project internally (without accessing any
+  login views) and its cookie used by next uses of the client.
+</p>
+
+<p>
+  Then, we construct our profile URL. We don't want our test to get coupled to our url details
+  as we don't want our code either. With <code>reverse</code>, calculate our URL under test.
+</p>
+
+<p>
+  Now the main part of our test: We use the client to perform a <code>HTTP GET</code> request
+  to our profile entry point and return us the HTTP response. See how simple the client makes
+  things for us.
+</p>
+
+<p>To finish it, check that the HTTP response status is a <code>200 OK</code>, and that's it.
+You wrote your first Django test. Let's run it:</p>
+
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">$ python manage.py test myapp
+</pre></div>
+
+<p>
+  You have many options for asserting the content of your request. Using Python DOM libraries
+  would be an option. A simpler one will be extending our test to something like the following,
+  but beware of tying too much to your frontend design.
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">assert_email</span><span style="color: #f8f8f2">(self,</span> <span style="color: #f8f8f2">email,</span> <span style="color: #f8f8f2">response_content):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertInHTML(</span>
+            <span style="color: #e6db74">&#39;&lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;{}&quot;&gt;&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(email),</span>
+            <span style="color: #f8f8f2">response_content</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">decode()</span>
+        <span style="color: #f8f8f2">)</span>
+
+    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_get_user_profile</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">force_login(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user)</span>
+
+        <span style="color: #f8f8f2">profile_url</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">reverse(</span><span style="color: #e6db74">&#39;myapp:profile&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">args</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">id])</span>
+	<span style="color: #f8f8f2">response</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">get(profile_url)</span>
+
+	<span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertEqual(</span><span style="color: #ae81ff">200</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">response</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">status_code)</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assert_email(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">email,</span> <span style="color: #f8f8f2">response</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">content)</span>
+</pre></div>
+
+<p>
+  Let's now test the update of our profile. This time we will need a <code>HTTP POST</code>
+  request with the updated information. If your application follows the POST-REDIRECT-GET
+  pattern, you will have to manage that redirection
+</p>
+
+<div style="background: #272822; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">    <span style="color: #66d9ef">def</span> <span style="color: #a6e22e">test_update_user_profile</span><span style="color: #f8f8f2">(self):</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">force_login(self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user)</span>
+
+        <span style="color: #f8f8f2">profile_url</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">reverse(</span><span style="color: #e6db74">&#39;myapp:profile&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">args</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">id])</span>
+        <span style="color: #f8f8f2">response</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">client</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">post(</span>
+            <span style="color: #f8f8f2">profile_url,</span> <span style="color: #f8f8f2">data</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&#39;email&#39;</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&#39;new@email.com&#39;</span><span style="color: #f8f8f2">})</span>
+
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertEqual(</span><span style="color: #ae81ff">302</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">response</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">status_code)</span>
+
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">refresh_from_db()</span>
+        <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">assertEqual(</span><span style="color: #e6db74">&#39;new@email.com&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">self</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">user</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">email)</span>
+</pre></div>
+
+<p>
+  As we did before, first login the user with the client. Again, calculate the url of our
+  profile entry point. But now we do a <code>POST</code> request, which have data associated
+  with it. Of course, the client does the information encoding for us and we can pass a Python
+  dictionary.
+</p>
+
+<p>
+  We check for the <code>302 Found</code> that means the success for our update request. Next,
+  we directly use the Django model to reload our user and assert that our email has been
+  changed successfully.
+</p>
+
+<p>
+  User acceptance tests should be the first line of defence of your Django project. They ensure
+  your core functionality keeps working as the user expects. As your application grows, you can
+  consider other strategies and just keep these tests for its fundamental features and cases.
+</p>
+
+{% endblock %}

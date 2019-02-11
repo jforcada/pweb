@@ -1,0 +1,108 @@
+{% extends "bases/top-page-base.html" %}
+
+{% block topPageContent %}
+
+<div class="cv pure-g row-canvas">
+  <div class="pure-u-1 pure-u-md-1-1 css-canvas">
+    <h2 class="title section-title">CV</h2>
+
+    <h3 class="title"><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2018 &nbsp;&nbsp; Site Reliability Engineer at Telefónica Digital &nbsp;&nbsp; Madrid (Spain)
+      &nbsp;&nbsp; <span class="current-label"><i class="fa fa-caret-left"></i>&nbsp;Now</span>
+    </h3>
+    <p>
+      Moving to a more systems oriented career, I rejoined my old team at TUENTI TECHNOLOGIES, acquired by Telefónica.
+    </p>
+
+    <h3 class="title"><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2017 &nbsp;&nbsp; Software Engineer at GIGAS Hosting &nbsp;&nbsp; Madrid (Spain)</h3>
+    <p>
+      My role at GIGAS was to analyze the status of the projects modernize some tools and processes.
+    </p>
+    <p>
+      I kickstarted the testing of the Python codebase with Pytest and developed some plugins to fit the various project
+      needs. Also, designed the continuous integration procedure based on Git Flow to speed up integration times.
+    </p>
+    <p>
+      For the renovation of the tools, provisioned a GitLab service to improve code reviews, continuous testing, continuous
+      integration, issue tracking,...
+    </p>
+    <p>
+      The most insightful side of my work was to train the existing team in the new techniques and procedures. To transmit
+      them the concept of quality and testing, and the confidence that arises from sticking to good practices.
+    </p>
+
+    <h3 class="title"><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2015 - 2017 &nbsp;&nbsp; Software Engineer at QDQ Media &nbsp;&nbsp; Madrid (Spain)</h3>
+    <p>
+      At the beginning of joining the company, I developed a sign in solution to bring customers from other companies
+      in partnership. It was developed in Python 3 and Django framework.
+    </p>
+    <p>
+      Next my team analyzed the architecture of the company systems, and decided to start the migration process to a microservices
+      architecture. We wanted to start small, and I built the asynchronous <strong>email service</strong> fed up through RabbitMQ
+      queues. That also implied to refactor the monolithic architecture to adapt to an asynchronous pattern when using the service.
+      The stack used was Python 3 with Django, Postgres and RabbitMQ.
+    </p>
+    <p>
+      Continuing with the microservices approach, I worked on a substitution service for an old call tracking system.
+      This time, building a synchronous system with an authenticated HTTP API, so multiple user facing products could benefit
+      from the same service easily. The tech here was Node.js with the hapi web framework.
+    </p>
+    <p>
+      Another big project that I worked on was a full revamp of the in house statistics service. Starting with the frontend
+      standarization of the tracking across different projects, adapting their templates and building an agnostic client-side
+      to automatically start tracking when included. The legacy system was using redis to store the data, and we migrated it
+      to Riak KV.
+    </p>
+    <p>
+      To support this kind of infrastructure, we use a private PaaS (Platform-as-a-Service) based on docker (like our
+      development environments) to quickly release new applications with minimal operations effort. We also established an
+      automated release process with continuous integration.
+    </p>
+
+    <h3 class="title"><i class="fa fa-cogs"></i>&nbsp;&nbsp; 2011 - 2014 &nbsp;&nbsp; Software Engineer at TUENTI TECHNOLOGIES &nbsp;&nbsp; Madrid (Spain)</h3>
+    <p>
+      One of the first projects I work on at the company was a new <strong>sign up system with phone verification</strong> for the
+      social network. The project was built using a SMS gateway with security code generation to verify the
+      identity of the profile.
+    </p>
+    <p>
+      Another web project I worked on was the rewrite of the <strong>social events</strong> feature. Rebuilding both, frontend and backend,
+      focusing mainly in its scalability to be able to manage the huge load of the site: database denormalization,
+      model caching, load balancing, data archiving, etc.
+    </p>
+    <p>
+      Then, I spent a full year working on the <strong>social network chat</strong>. There were two main projects our team developed: The
+      <strong>group chat</strong>, extending the existing one-to-one chat to allow users to create roms with more than two members. And the
+      <strong>photo sharing</strong>, with which the users could send their photos through a chat conversation.
+    </p>
+    <p>
+      Also worked for a year and a half on the MVNO (Mobile Virtual Network Operator) side of the company. Developing with
+      the rest of the acquisition team an <strong>A/B testing framework</strong> for our online store checkout with payment integration,
+      identity verification and shipment tracking.
+    </p>
+    <p>
+      At the MVNO, our team also rebuilt the <strong>retail sales tool</strong> to solve security issues, and perform some usability
+      improvements from the feedback provided by the sellers. Also improving and standarizing the backend API the
+      tool was relying on.
+    </p>
+    <p>
+      All the work on the server side was done in PHP, using an in house web framework and the Symfony 2 framework. On the
+      storage side, MySQL, Memcached and HBase were the main tools. We were also relying on Beanstalkd as messaging system and queue
+      processing. On the client side, we developed in JavaScript with both jQuery and YUI.
+    </p>
+    <p>
+      The team were managed with Scrum as long as custom methodologies. We did heavy use of continuous integration and
+      automated development environments based on Vagrant that mimicked production. High quality testing of every project became a self imposed
+      standard.
+    </p>
+
+    <h3 class="title"><i class="fa fa-graduation-cap"></i>&nbsp;&nbsp; 2005 - 2011 &nbsp;&nbsp; Computer Engineering student at Universitat Jaume I (UJI)</h3>
+    <p>
+      I studied Computer Engineering in the Universitat Jaume I (UJI) in Castellón, Spain. Focused on software
+      engineering and algorithms.
+    </p>
+
+
+  </div>
+</div>
+
+{% endblock %}
