@@ -17,7 +17,8 @@ DISTRIBUTION_DIRECTORY = 'dist'
 POST_DISTRIBUTION_PATH = '{}/posts'.format(DISTRIBUTION_DIRECTORY)
 TAGS_DISTRIBUTION_PATH = '{}/tags'.format(DISTRIBUTION_DIRECTORY)
 
-DEFAULT_IMG_URL = '/static/logo1.svg.png'
+DOMAIN = 'https://jforcada.com'
+DEFAULT_IMG_URL = '{}/static/logo1.svg.png'.format(DOMAIN)
 
 TOP_LEVEL_PAGES = []
 BLOG_PAGE = None
