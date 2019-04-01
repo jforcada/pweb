@@ -25,3 +25,4 @@ TODO
 
 - Projects page
 - Responsive
+- Highlight tags on hover

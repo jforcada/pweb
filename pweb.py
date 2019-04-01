@@ -42,8 +42,15 @@ class Page(object):
             return DEFAULT_IMG_URL
         return self._img_url
 
+    @property
     def url(self):
         raise NotImplementedError()
+
+    @property
+    def full_url(self):
+        return '{domain}{path}'.format(
+            domain=DOMAIN, path=self.url
+        )
 
 
 class TopLevelPage(Page):
