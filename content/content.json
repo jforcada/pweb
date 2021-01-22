@@ -3,6 +3,7 @@
         {"title": "Home", "filename": "index", "description": "Jaime Forcada website"},
         {"title": "Contact", "filename": "contact", "description": "Contact me if you wish"},
         {"title": "CV", "filename": "cv", "description": "Jaime Forcada curriculum"},
+        {"title": "Projects", "filename": "projects", "description": "My projects"},
         {"title": "All posts", "filename": "old-posts", "description": "All blog posts until today"}
     ],
     "blog": {
@@ -14,30 +15,31 @@
                 "serialNum": "0001",
                 "title": "Lean frontend framework based on jQuery for entrepreneurs",
                 "description": "A little JavaScript snippet to build your frontend around",
-                "date": "2019-01-09",
+                "date": "2020-11-09",
                 "tags": ["software development", "JavaScript"]
             },
             {
                 "serialNum": "0002",
                 "title": "Static site generator with Python and Jinja",
                 "description": "A very simple static site generator idea",
-                "date": "2019-02-15",
-                "tags": ["software development", "automation"],
-                "hide": true
+                "date": "2020-12-15",
+                "tags": ["software development", "Python", "web"]
             },
             {
                 "serialNum": "0003",
                 "title": "Django testing I: User acceptance tests",
                 "description": "Kickoff the testing of your Django project",
-                "date": "2019-03-10",
-                "tags": ["software development", "JavaScript"],
-                "hide": true
+                "date": "2021-01-10",
+                "tags": ["software development", "Python", "Django", "testing"]
             }
         ],
         "tags": [
             "software development",
             "JavaScript",
-            "automation"
+            "Python",
+            "web",
+            "Django",
+            "testing"
         ]
     }
 }

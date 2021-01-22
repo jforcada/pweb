@@ -18,7 +18,7 @@ POST_DISTRIBUTION_PATH = '{}/posts'.format(DISTRIBUTION_DIRECTORY)
 TAGS_DISTRIBUTION_PATH = '{}/tags'.format(DISTRIBUTION_DIRECTORY)
 
 DOMAIN = 'https://jforcada.com'
-DEFAULT_IMG_URL = '{}/static/logo1.svg.png'.format(DOMAIN)
+DEFAULT_IMG_URL = '{}/static/logo.png'.format(DOMAIN)
 
 TOP_LEVEL_PAGES = []
 BLOG_PAGE = None
@@ -26,7 +26,7 @@ POSTS = []
 TAGS = []
 
 
-class Page(object):
+class Page:
 
     def __init__(self, title, description, img_url=None):
         self.title = title

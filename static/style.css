@@ -1,6 +1,11 @@
 body {
   background-color: white;
 }
+a {
+  color: black;
+  text-decoration: underline;
+}
+
 .title {
   font-family: 'Muli', sans-serif;
 }
@@ -27,7 +32,7 @@ body {
 
 /* Overrides */
 .pure-g [class *="pure-u"] {
-  font-family: 'Muli', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 /* Header */
@@ -48,11 +53,11 @@ body {
 }
 .pure-button {
   color: white;
-  background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
+  background: black;
   margin-top: 5px;
 }
 .pure-button:hover {
-  background: linear-gradient(to right, #7e7eff 0%,#ab3cfd 100%);
+  box-shadow: 2px 4px 8px #888;
 }
 .center {
   text-align: center;
@@ -81,13 +86,14 @@ footer .license {
 .index {
   height: 100vh;
   width: 100%;
-  display: table;
+  margin-top: 50px;
 }
 .index .cell {
-  display: table-cell;
-  vertical-align: middle;
-  font-family: 'Muli', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   text-align: center;
+}
+.index .cell div {
+  padding: 8px;
 }
 .index .cell h1 {
   font-size: 1.5em;
@@ -110,30 +116,22 @@ footer .license {
 }
 .current-label {
   color: white;
-  background: linear-gradient(to right, #28009e 0%,#5b009e 100%);
+  background: black;
   border-radius: 2px;
   padding: 2px 6px;
 }
 
 /* Contact list */
 .contact-list {
-  font-size: 24px;
+  max-width: 550px;
 }
-.contact-list :nth-child(odd) {
-  text-align: right;
+.contact-list :nth-child(even) {
   margin-bottom: 20px;
-}
-.contact-list :nth-child(odd) span {
-  padding-right: 50px;
-}
-.contact-list a {
-  color: #424242;
-  text-decoration: none;
 }
 
 /* Blog */
 .blog p {
-  font-family: sans-serif;
+  font-family: 'Ubuntu';
 }
 .blog h3 {
   font-size: 26px;
@@ -143,10 +141,6 @@ footer .license {
   margin-top: 30px;
   text-align: right;
 }
-.blog .old-entries-link a {
-  color: #424242;
-  text-decoration: none;
-}
 .blog .post-list li {
   list-style-type: none;
 }
@@ -155,7 +149,6 @@ footer .license {
   margin-bottom: 5px;
 }
 .blog .post-list li a {
-  text-decoration: none;
   color: #424242;
 }
 .blog ol li {
@@ -173,5 +166,10 @@ footer .license {
   font-size: 70%;
 }
 .blog .post-tags li a.pure-button {
-  background: #28009e99;
+  background: black;
+}
+
+/* Common styles */
+.small-text {
+  font-size: small;
 }

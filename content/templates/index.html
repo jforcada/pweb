@@ -5,10 +5,48 @@
 {% block content %}
 
 <div class="pure-g index">
-  <div class="pure-u-1-1 cell">
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <img src="/static/logo.png">
     <h1>Jaime Forcada Balaguer</h1>
-    <img src="/static/logo1.svg.png">
-    {% include 'includes/navigation-menu.html' %}
+  </div>
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <div>
+      <p>Welcome to my personal web page.</p>
+      <p>I am a software engineer. Here I post things that I work on, investigate
+      and build.</p>
+      <p>You will find non technical stuff too.</p>
+      <p>In any case, my opinions are my own and they do not represent the ones
+      of my employer.</p>
+    </div>
+  </div>
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <div>
+      <p><span class="small-text">Read my latest blog post...</span></p>
+      <p><a href="{{ posts[0].url }}">{{ posts[0].title }}</a></p>
+      <p><span class="small-text">Or see <a href="{{ 'old-posts'|url}}">all the previous ones</a>.</span></p>
+    </div>
+  </div>
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <div>
+      <p>I build things mostly to learn and explore new concepts and tech.</p>
+      <p>Check my <a href="{{ 'projects'|url}}">Projects</a> to see what I
+        have been doing.</p>
+    </div>
+  </div>
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <div>
+      <p>If you are interested in my career, check my
+        <a href="{{ 'cv'|url}}">CV</a>.
+      </p>
+      <p>I am usually not interested in new 9 to 5 career opportunities.</p>
+      <p>I am more interested in living in the mountains and having most of the
+      day for myself. You have been warned.</p>
+    </div>
+  </div>
+  <div class="pure-u-1 pure-u-md-1-3 cell">
+    <div>
+      <p>Check my <a href="{{ 'contact'|url}}">Contact</a> page if you want to talk to me or sneak around.</p>
+    </div>
   </div>
 </div>
 
