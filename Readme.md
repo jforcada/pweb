@@ -64,3 +64,4 @@ With `monokai` theme. For plain output YAML and `autumn`.
 - Find a better way to format code
 - Add leela as a project
 - Ubuntu Mono for code snippets
+- favicon not alpha, but white background
