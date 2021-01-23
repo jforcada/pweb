@@ -168,6 +168,9 @@ footer .license {
 .blog .post-tags li a.pure-button {
   background: black;
 }
+.blog .image {
+  text-align: center;
+}
 
 /* Common styles */
 .small-text {

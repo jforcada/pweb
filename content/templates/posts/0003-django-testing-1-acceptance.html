@@ -9,7 +9,17 @@
   Django offers some tools for testing. It manages many things for us, like the creation of an
   ephemeral test database so our tests don't destroy our production or development data set.
   Or providing us with an integrated test runner that understands the app structure.
-</p>  
+</p>
+
+<p>
+  Acceptance tests run against the main interactions the user is expected to do. They test the
+  whole application stack: The view that deals with the HTTP communication, the business logic
+  that implements our service and the models that represent the data to persist in the database.
+</p>
+
+<p class="image">
+  <img src="/static/testing-layers.png">
+</p>
 
 <p>
   The main tool that allows us to write acceptance tests is the test client. With it, we are
