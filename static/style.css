@@ -129,6 +129,17 @@ footer .license {
   margin-bottom: 20px;
 }
 
+/* Projects */
+.projects h2 {
+  margin-bottom: 30px;
+}
+.projects img {
+  max-width: 100%;
+}
+.projects .explanation div {
+  padding-left: 20px;
+}
+
 /* Blog */
 .blog p {
   font-family: 'Ubuntu';

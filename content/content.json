@@ -30,7 +30,8 @@
                 "title": "Django testing I: User acceptance tests",
                 "description": "Kickoff the testing of your Django project",
                 "date": "2021-01-10",
-                "tags": ["software development", "Python", "Django", "testing"]
+                "tags": ["software development", "Python", "Django", "testing"],
+                "img_url": "/static/blog-testing-layers.png"
             }
         ],
         "tags": [

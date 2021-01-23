@@ -1,5 +1,9 @@
 # PWeb
 
+A simple static site generator. It run generates https://jforcada.com.
+
+## HowTo
+
 To compile the site:
 
     $ python pweb.py
@@ -44,20 +48,19 @@ With `monokai` theme. For plain output YAML and `autumn`.
 
 ## TODO
 
-### Blockers to release
-
-- Push to github
-- Add github link to this project in static site generator post
-- Add layer scheme to acceptance testing: view | business logic | database models
-
 ### Posts
 
 1. Recover all wordpress posts
 2. ReactJS opinion
 3. Django testing II: Integration tests
 4. Django testing III: Unit tests
+5. PicoCTF https://picoctf.org/
+6. PWN College https://pwn.college/
+7. Book Review: Modern C
 
 ### Generator
 
 - Make tags unique in content.json to avoid missing them
 - Find a better way to format code
+- Add leela as a project
+- Ubuntu Mono for code snippets
