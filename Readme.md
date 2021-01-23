@@ -47,14 +47,15 @@ With `monokai` theme. For plain output YAML and `autumn`.
 ### Blockers to release
 
 - Push to github
-- Complete CV
-- Add layer scheme to acceptance testing: view | business logic | database models
 - Add github link to this project in static site generator post
+- Add layer scheme to acceptance testing: view | business logic | database models
 
 ### Posts
 
 1. Recover all wordpress posts
 2. ReactJS opinion
+3. Django testing II: Integration tests
+4. Django testing III: Unit tests
 
 ### Generator
 
