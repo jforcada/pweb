@@ -1,0 +1,205 @@
+{% extends "blog.html" %}
+
+{% block post %}
+
+<h1>{{ page.title }}</h1>
+{% include 'includes/blog-post-details.html' %}
+
+<p>
+  <a href="https://www.docker.com/" target="_blank" rel="noopener
+  noreferrer">Docker</a> is already present in the server infrastructure of most
+  companies. It has become one of the top DevOps technologies in the latest
+  years.
+</p>
+
+<p>
+  We are going to see the basics of how it works, the Linux kernel features that
+  make it possible.
+</p>
+
+<p>
+  Docker adds on top of these capabilities high level features so we do not have
+  to deal with the details when working with containers.
+</p>
+
+<p>
+  What are these parts and how do they work?
+</p>
+
+<h2>Namespaces</h2>
+
+<h3>What's a linux namespace?</h3>
+
+<p>
+  A namespace is a technique to isolate a specific resource from the rest of the
+  system. This way, a resource living inside a namespace does not exist to other
+  resources living into other namespaces. For example, a process inside
+  <code>A</code> namespace can access all the resources in that namespace, but
+  will not know about the existence of resources inside <code>B</code> namespace.
+</p>
+
+<p>
+  Nonetheless, a resource can be in multiple namespaces, so all processes inside
+  them will have access to it. For example, a text file.
+</p>
+
+<p>
+  By default, a Linux system will have one single namespace where all processes
+  will get access to all resources. With namespace technology, they can be
+  compartmentalized.
+</p>
+
+<p>
+  Namespaces have a hierarchy. These means that a namespace that descends from
+  another, the resources from the descendants can be accessed by the ones in the
+  ascendants.
+</p>
+
+<h4>What types of namespaces do exist in Linux?</h4>
+
+<p>
+  There are multiple types of namespaces in Linux. The type of the namespace
+  depends on the resources it is going to isolate, though its purpose is always
+  the same.
+</p>
+
+<h5>Mount namespace</h5>
+
+<p>
+  It is the first namespace type that was implemented in Linux. Its purpose is
+  to isolate a set of mount points so they can only be accessed by a group of
+  processes.
+</p>
+
+<h5>UTS namespace</h5>
+
+<p>
+  It isolates two system identifiers, <code>nodename</code> and
+  <code>domainname</code>. This allows the group of processes inside the namespace
+  to work as if the hostname and domain names were different.
+</p>
+
+<h5>IPC namespace</h5>
+
+<p>
+  Isolates some communication mechanisms between processes, so inside this
+  namespace those mechanisms are only available to the processes of the group
+  and have their own set of identifiers.
+</p>
+
+<h5>PID namespace</h5>
+
+<p>
+  This one is probably the most remarkable, as it allows to isolate the
+  processes themselves in an independent set of process identifiers. Each
+  namespace has inside its own <code>init</code> process (PID=1). In other words,
+  it makes possible to isolate process trees.
+</p>
+
+<p>
+  This also implies that a process inside a namespace will have 2 PID assigned:
+  the one inside the namespace and the outer one. This is because of the hierarchy
+  system, the initial namespace can see all the processes that are created from it.
+</p>
+
+<h5>Network namespace</h5>
+
+<p>
+  This namespace brings isolation to the whole network stack, that is, all the
+  resources related to networking: interfaces, IP adresses, routing tables,
+  ports, etc.
+</p>
+
+<p>
+  Each namespace can hold its own independent IP addressing, and so multiple
+  processes bind to port 80 as long as they are inside its own namespace. Then
+  these ports can be binded to others in the top namespace of the host.
+</p>
+
+<h5>User namespace</h5>
+
+<p>
+  Isolates users and groups, that inside the namespace get their own identifier.
+  These users and groups will get different identifiers outside the namespace.
+</p>
+
+<p>
+  This allows that a non privileged user in the host, to have permissions inside
+  the namespace, so he can run processes and use resource that require
+  privileges.
+</p>
+
+<h2>What are control groups in Linux?</h2>
+
+<p>
+  Linux CGroups are groups that allow the control of resources to the processes
+  that belong to them.
+</p>
+
+<p>
+  Historically the project started as a similar idea to namespaces, but then
+  namespaces were developed to cover more use cases. Anyway CGroups are being
+  used now together with namespaces.
+</p>
+
+<p>
+  This combined usage is due to CGroups providing a set of capabilities to the
+  system that supplement those of the namespaces. Specifically:
+</p>
+
+<ul>
+  <li>
+    <strong>Resource limits</strong>, can be configured in a group so its
+    processes do not exceed a specific memory limit, for example.
+  </li>
+  <li>
+    <strong>Prioritization</strong>, some groups can have higher priority to
+    access system resources, like CPU or Input/Output interfaces.
+  </li>
+  <li>
+    <strong>Accounting</strong>, the resources being used can be mesured.
+  </li>
+  <li>
+    <strong>Control</strong>, it is possible to perform actions on all the
+    processes of a group at once.
+  </li>
+</ul>
+
+<p>
+  But more than anything CGroups make sure that no process by itself can take
+  down the system by exhausting all its resources.
+</p>
+
+<p>
+  And like namespaces, CGroups can also have a hierarchy: A group will inherit
+  the limits of the parent group.
+</p>
+
+<h2>Get more info</h2>
+
+<ul>
+  <li>
+    <a href="https://en.wikipedia.org/wiki/Linux_namespaces" target="_blank"
+    rel="noopener noreferrer">Namespaces</a> in Wikipedia
+  </li>
+  <li>
+    Docker documentation on <a
+    href="https://docs.docker.com/get-started/overview/#the-underlying-technology"
+    target="_blank" rel="noopener noreferrer">underlying technology</a>
+  </li>
+  <li>
+    Linux weekly news article on <a href="https://lwn.net/Articles/531114/"
+    target="_blank" rel="noopener noreferrer">namespaces</a>
+  </li>
+  <li>
+    Docker documentation about <a
+    href="https://docs.docker.com/engine/security/" target="_blank"
+    rel="noopener noreferrer">security</a>
+  </li>
+  <li>
+    <a href="https://en.wikipedia.org/wiki/Cgroups" target="_blank"
+    rel="noopener noreferrer">CGroups</a> in Wikipedia
+  </li>
+</ul>
+
+{% endblock %}

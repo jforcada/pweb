@@ -32,15 +32,24 @@
                 "date": "2021-01-10",
                 "tags": ["software development", "Python", "Django", "testing"],
                 "img_url": "/static/blog-testing-layers.png"
+            },
+            {
+                "serialNum": "0004",
+                "title": "How docker works",
+                "description": "Let's explore the technology docker is based on",
+                "date": "2021-01-30",
+                "tags": ["DevOps", "Linux"]
             }
         ],
         "tags": [
-            "software development",
-            "JavaScript",
-            "Python",
-            "web",
+            "DevOps",
             "Django",
-            "testing"
+            "JavaScript",
+            "Linux",
+            "Python",
+            "software development",
+            "testing",
+            "web"
         ]
     }
 }

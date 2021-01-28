@@ -57,6 +57,7 @@ With `monokai` theme. For plain output YAML and `autumn`.
 5. PicoCTF https://picoctf.org/
 6. PWN College https://pwn.college/
 7. Book Review: Modern C
+8. Proposal for a social network open protocol
 
 ### Generator
 
@@ -65,3 +66,4 @@ With `monokai` theme. For plain output YAML and `autumn`.
 - Add leela as a project
 - Ubuntu Mono for code snippets
 - favicon not alpha, but white background
+- Render all tags inside old-posts page

@@ -144,9 +144,21 @@ footer .license {
 .blog p {
   font-family: 'Ubuntu';
 }
-.blog h3 {
+.blog h1 {
+  font-size: 40px;
+}
+/* .blog h3 {
   font-size: 26px;
   margin-top: 60px;
+} */
+.blog h4 {
+  font-size: 20px;
+}
+.blog h5 {
+  font-size: 18px;
+}
+.blog h6 {
+  font-size: 16px;
 }
 .blog .old-entries-link {
   margin-top: 30px;
